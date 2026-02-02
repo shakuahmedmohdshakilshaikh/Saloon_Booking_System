@@ -13,14 +13,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/services")
+@CrossOrigin(origins = "*")
 public class ServiceController {
 
     @Autowired
     private ServiceService serviceService;
 
     @PostMapping
-    public ResponseEntity<ServiceResponse> createService(
-            @Valid @RequestBody ServiceRequest request) {
+    public ResponseEntity<ServiceResponse> createService(@Valid @RequestBody ServiceRequest request) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -31,6 +31,8 @@ public class ServiceController {
     public ResponseEntity<List<ServiceResponse>> getAllServices() {
         return ResponseEntity.ok(serviceService.getAllServices());
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ServiceResponse> getServiceById(

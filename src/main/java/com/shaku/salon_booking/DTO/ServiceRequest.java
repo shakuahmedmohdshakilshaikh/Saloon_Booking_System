@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.util.List;
+
 public class ServiceRequest {
 
     @NotBlank(message = "Service name is required")
@@ -20,6 +22,9 @@ public class ServiceRequest {
 
     @NotBlank(message = "Status is required")
     private String status;
+
+    private List<String> imageUrls;
+
 
     @NotNull(message = "Salon ID is required")
     private Long salonId;
@@ -73,4 +78,13 @@ public class ServiceRequest {
     public void setSalonId(Long salonId) {
         this.salonId = salonId;
     }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
 }

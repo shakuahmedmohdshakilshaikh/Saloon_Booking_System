@@ -10,6 +10,8 @@ import com.shaku.salon_booking.Repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
@@ -32,4 +34,12 @@ public class PaymentServiceImpl implements PaymentService {
 
         return paymentRepository.save(payment);
     }
+
+    @Override
+    public List<Payment> getAllPayment(){
+         return paymentRepository.findAll();
+
+    }
+
+
 }

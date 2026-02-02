@@ -2,6 +2,7 @@ package com.shaku.salon_booking.Model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public class Booking {
 
     @ManyToOne
     @JsonManagedReference
+    @JsonIgnore
     private Salon salon;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)

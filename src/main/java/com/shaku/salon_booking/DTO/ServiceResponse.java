@@ -1,5 +1,7 @@
 package com.shaku.salon_booking.DTO;
 
+import java.util.List;
+
 public class ServiceResponse {
 
     private Long id;
@@ -9,8 +11,10 @@ public class ServiceResponse {
     private int durationMinutes;
     private String status;
     private String salonName;
+    private List<String> imageUrls;
 
     // ---------- Getters & Setters ----------
+
 
     public Long getId() {
         return id;
@@ -66,5 +70,13 @@ public class ServiceResponse {
 
     public void setSalonName(String salonName) {
         this.salonName = salonName;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }

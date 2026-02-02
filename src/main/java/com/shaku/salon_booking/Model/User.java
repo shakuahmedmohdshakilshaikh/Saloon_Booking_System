@@ -31,6 +31,8 @@ public class User {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Booking> bookings;
@@ -38,7 +40,7 @@ public class User {
     // Getters & Setters
 
 
-    public User(Long id, String name, String email, String password, String phone, Role role, String status, LocalDateTime createdAt, List<Booking> bookings) {
+    public User(Long id, String name, String email, String password, String phone, Role role, String status, LocalDateTime createdAt, LocalDateTime updatedAt, List<Booking> bookings) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -47,6 +49,7 @@ public class User {
         this.role = role;
         this.status = status;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.bookings = bookings;
     }
 
@@ -115,6 +118,14 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public List<Booking> getBookings() {

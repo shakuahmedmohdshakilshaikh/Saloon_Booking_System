@@ -4,12 +4,14 @@ import com.shaku.salon_booking.DTO.ServiceRequest;
 import com.shaku.salon_booking.DTO.ServiceResponse;
 import com.shaku.salon_booking.Model.Salon;
 import com.shaku.salon_booking.Model.ServiceEntity;
+import com.shaku.salon_booking.Model.ServiceImage;
 import com.shaku.salon_booking.Repository.SalonRepository;
 import com.shaku.salon_booking.Repository.ServiceRepository;
 import com.shaku.salon_booking.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,8 +31,7 @@ public class ServiceServiceImpl implements ServiceService {
                         new ResourceNotFoundException("Salon not found"));
 
         // Prevent duplicate service in same salon
-        if (serviceRepository.existsByNameAndSalon_Id(
-                request.getName(), request.getSalonId())) {
+        if (serviceRepository.existsByNameAndSalon_Id(request.getName(), request.getSalonId())) {
             throw new RuntimeException("Service already exists in this salon");
         }
 
@@ -39,12 +40,29 @@ public class ServiceServiceImpl implements ServiceService {
         service.setDescription(request.getDescription());
         service.setPrice(request.getPrice());
         service.setDurationMinutes(request.getDurationMinutes());
-        service.setStatus(request.getStatus());
+//        service.setStatus(request.getStatus());
         service.setSalon(salon);
 
-        ServiceEntity saved = serviceRepository.save(service);
+        // Save service first
+        ServiceEntity savedService = serviceRepository.save(service);
 
-        return mapToResponse(saved);
+        if (request.getImageUrls() != null) {
+
+            List<ServiceImage> images = new ArrayList<>();
+
+            for (String url : request.getImageUrls()) {
+                ServiceImage img = new ServiceImage();
+                img.setImageUrl(url);
+                img.setService(savedService);
+                images.add(img);
+            }
+
+            savedService.setImages(images);
+            serviceRepository.save(savedService);
+        }
+
+
+        return mapToResponse(savedService);
     }
 
     @Override
@@ -80,7 +98,6 @@ public class ServiceServiceImpl implements ServiceService {
         serviceRepository.deleteById(id);
     }
 
-    // --------- Mapper ---------
     private ServiceResponse mapToResponse(ServiceEntity service) {
         ServiceResponse dto = new ServiceResponse();
         dto.setId(service.getId());
@@ -88,8 +105,17 @@ public class ServiceServiceImpl implements ServiceService {
         dto.setDescription(service.getDescription());
         dto.setPrice(service.getPrice());
         dto.setDurationMinutes(service.getDurationMinutes());
-        dto.setStatus(service.getStatus());
         dto.setSalonName(service.getSalon().getName());
+
+        if (service.getImages() != null) {
+            dto.setImageUrls(
+                    service.getImages()
+                            .stream()
+                            .map(ServiceImage::getImageUrl)
+                            .toList()
+            );
+        }
+
         return dto;
     }
 }

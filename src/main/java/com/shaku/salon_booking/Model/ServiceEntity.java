@@ -20,7 +20,10 @@ public class ServiceEntity {
     private double price;
     private int durationMinutes;
 
-    private String status;
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ServiceImage> images;
+
 
     @ManyToOne
     @JoinColumn(name = "salon_id")
@@ -31,13 +34,13 @@ public class ServiceEntity {
     @JsonBackReference
     private List<Booking> bookings;
 
-    public ServiceEntity(Long id, String name, String description, double price, int durationMinutes, String status, Salon salon, List<Booking> bookings) {
+    public ServiceEntity(Long id, String name, String description, double price, int durationMinutes, List<ServiceImage> images, Salon salon, List<Booking> bookings) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.durationMinutes = durationMinutes;
-        this.status = status;
+        this.images = images;
         this.salon = salon;
         this.bookings = bookings;
     }
@@ -85,12 +88,12 @@ public class ServiceEntity {
         this.durationMinutes = durationMinutes;
     }
 
-    public String getStatus() {
-        return status;
+    public List<ServiceImage> getImages() {
+        return images;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setImages(List<ServiceImage> images) {
+        this.images = images;
     }
 
     public Salon getSalon() {
@@ -107,6 +110,20 @@ public class ServiceEntity {
 
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", durationMinutes=" + durationMinutes +
+                ", images=" + images +
+                ", salon=" + salon +
+                ", bookings=" + bookings +
+                '}';
     }
 }
 
